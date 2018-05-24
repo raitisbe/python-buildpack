@@ -14,11 +14,17 @@ mkdir -p "$BUILD_DIR/.profile.d"
 
 echo "export DEPS_DIR=\$HOME/.cloudfoundry" > "$BUILD_DIR/.profile.d/0000_set-deps-dir.sh"
 
+echo "te"
+echo "$ROOT_DIR/nodejs/bin/detect $BUILD_DIR"
+
+pushd `pwd` &> /dev/null
 $ROOT_DIR/nodejs/bin/detect $BUILD_DIR
 OUT=$?
+echo "$OUT"
 if [ $OUT -eq 0 ];then
    $ROOT_DIR/nodejs/bin/compile $BUILD_DIR $CACHE_DIR
 fi
+popd
 
 $BUILDPACK_PATH/bin/supply "$BUILD_DIR" "$CACHE_DIR" "$DEPS_DIR" 0
 $BUILDPACK_PATH/bin/finalize "$BUILD_DIR" "$CACHE_DIR" "$DEPS_DIR" 0
